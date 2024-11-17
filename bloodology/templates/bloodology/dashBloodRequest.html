@@ -1,0 +1,58 @@
+{% extends 'bloodology/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+.btn{
+    margin-left:15px;
+}
+</style>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'dashboard' %}">My Blog</a></li>
+                    <li><a href="{% url 'blogapostform' %}">Add new blog</a></li>
+                    <li><a href="{% url 'dashbloodReq' %}">Blood Request Posts</a></li>
+                    <li><a href="{% url 'addRequest' %}">Add new Blood Request</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="blogcontainer col-sm-10">
+            <h1>Blood Request Post</h1>
+            <div class="row">
+                {% for post in requests %}
+                <div class="post-page col-lg-4 col-md-6 col-sm-8 col-10 mb-4 d-flex justify-content-center"> <!-- Responsive columns and center posts -->
+                    <div class="blood-request-card-alt_p">
+                        <div class="card-header_p">
+                            <h2 class="blood-group">{{ post.blood_group }}</h2>
+                            <p class="date-time">{{ post.date_time }}</p>
+                        </div>
+                        <div class="card-body_p">
+                            <p class="disease-name">Disease: {{ post.Disease_name }}</p>
+                            <p class="number-of-bags">Bags Needed: {{ post.No_of_bag }}</p>
+                            <p class="location">Medical: {{ post.medical_name }}</p>
+                            <p class="location">Location: {{ post.location }}</p>
+                            <p class="phone-number">Phone: {{ post.phone_number }}</p>
+                        </div>
+                        <a href="{% url 'updateaddRequest' post.id %}" class="edit-btn">
+                            <button type="submit" class='btn btn-success'>Edit</button>
+                        </a>
+                        <div class="post-user-info">
+                            <p class="create_at">Post at: {{ post.created_at }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {% empty %}
+                <p>There are no blood request posts available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

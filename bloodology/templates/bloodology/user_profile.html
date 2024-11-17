@@ -1,0 +1,79 @@
+{% extends 'bloodology/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="dp_card">
+    <div class="profile-card-unique">
+        <div class="profile-img-unique">
+            <img src="{{ profile.profile_img.url }}" alt="Donor Image" class="donor-image">
+        </div>
+        <div class="profile-info-unique">
+            <h2 class="profile-name-unique">{{ profile.name }}</h2>
+            <p class="profile-blood-group-unique"><b>Blood Group:</b> {{ profile.blood_group }}</p>
+            <p class="profile-phone-unique"><b>Phone:</b> {{ profile.phone_number }}</p>
+            <p class="profile-phone-unique"><b>Email:</b> {{ profile.user.email }}</p>
+            <p class="profile-address-unique"><b>Address:</b> {{ profile.address }}</p>
+            {% if profile.is_available %}
+                <p class="status"><span class='status1'>Available</span></p>
+            {% else %}
+                <p class="status"><span class='status2'>Available in {{ profile.days_remaining }} days</span></p>
+            {% endif %}
+        </div>
+        <div class="profile-actions-unique">
+            <button class="btn-unique edit-btn-unique"><a href="{% url 'updateProfile' user.id %}">Edit</a></button>
+            <button class="btn-unique delete-btn-unique" onclick="showConfirmation()">Delete</button>
+            <button class="btn-unique reset-btn-unique reset" onclick="resetDonationDate()"><a href="{% url 'update_donation_date' user.id %}">Reset Donation Date</a></button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Popup -->
+<div id="deleteConfirmation" class="confirmation-overlay" style="display: none;">
+    <div class="confirmation-dialog">
+        <p>Are you sure you want to delete your profile?</p>
+        <div class="confirmation-buttons">
+            <form action="{% url 'deleteProfile' profile.id %}" method="post"> {% csrf_token %}
+                <button type="submit" class="btn-confirm" onclick="deleteProfile()">Yes</button>
+            </form>
+            <button class="btn-cancel" onclick="hideConfirmation()">No</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Confirmation for delete
+    function showConfirmation() {
+        document.getElementById("deleteConfirmation").style.display = "flex";
+    }
+
+    function hideConfirmation() {
+        document.getElementById("deleteConfirmation").style.display = "none";
+    }
+
+    function deleteProfile() {
+        // Add your deletion logic here
+        hideConfirmation();
+    }
+    function resetDonationDate() {
+        // Make an AJAX call or redirect to a view to reset the donation date
+        const today = new Date().toISOString().split('T')[0];  // Get today's date
+        fetch("{% url 'update_donation_date' user.id %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ last_blood_donation: today }),
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();  // Reload the page to reflect the changes
+            } else {
+                alert("Failed to reset donation date.");
+            }
+        });
+    }
+</script>
+
+{% endblock content %}

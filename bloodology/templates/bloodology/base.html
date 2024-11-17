@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareBlood</title>
+    <script src="https://kit.fontawesome.com/9f358cce60.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'bloodology/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'bloodology/css/bootstrap.css' %}">
+</head>
+<body>
+    <!-- navigation bar -->
+    <div class="navigation">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <a href="{% url 'home' %}">ShareBlood</a>
+            </div>
+        </div>
+    
+        <div class="nav-right" id="nav-right">
+            <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="{% url 'blogapost' %}"> Blog</a>
+            <a href="{% url 'All_Donors' %}"><i class="fa-solid fa-search"></i> Search Donor</a>
+            {% if request.user.is_authenticated %}
+            <div class="user-dropdown">
+                <a href="#" class="user-profile" onclick="toggleDropdown(event)">
+                    {% if request.user.userprofile %}
+                    <img src="{{ request.user.userprofile.profile_img.url }}" alt="Profile Image" class="dprofile-img">
+                    {{ request.user.userprofile.name }} <i class='fas fa-angle-down'></i>
+                    {% else %}
+                    <img src="{% static 'bloodology/image/image.png' %}" alt="Admin" class="dprofile-img">
+                    Admin Profile <i class='fas fa-angle-down'></i>
+                    {% endif %}
+                </a>
+                <div class="dropdown-content">
+                    <a href="{% url 'addRequest' %}">Add Blood Request</a>
+                    <a href="{% url 'profile' %}">Profile</a>
+                    <a href="{% url 'blogapostform' %}">Post Blog</a>
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                    <a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> LogOut</a>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'signUp' %}"><i class="fa-solid fa-user-plus"></i> SignUp</a>
+            <a href="{% url 'login' %}"><i class="fas fa-sign-in"></i> Login</a>
+            {% endif %}
+        </div>
+    
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    
+        <!-- Close Menu Icon -->
+        <div class="close-menu hide" id="close-menu" onclick="toggleMobileMenu()">
+            <i class="fas fa-times"></i> <!-- Changed icon to 'times' for close button -->
+        </div>
+    </div>
+    
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault(); // Prevent default action
+            const userDropdown = event.currentTarget.closest('.user-dropdown');
+            userDropdown.classList.toggle('active'); // Toggle the dropdown
+        }
+    
+        // Close dropdown if clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.closest('.user-dropdown')) {
+                document.querySelectorAll('.user-dropdown.active').forEach(dropdown => {
+                    dropdown.classList.remove('active'); // Hide dropdowns if clicked outside
+                });
+            }
+        });
+    
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navRight = document.getElementById('nav-right');
+            const hamburger = document.getElementById('hamburger');
+            const closeMenu = document.getElementById('close-menu');
+    
+            navRight.classList.toggle('show'); // Show or hide the nav-right section
+    
+            if (navRight.classList.contains('show')) {
+                hamburger.style.display = 'none';  // Hide hamburger
+                closeMenu.style.display = 'block';  // Show close button
+            } else {
+                hamburger.style.display = 'block';  // Show hamburger
+                closeMenu.style.display = 'none';   // Hide close button
+            }
+        }
+    </script>
+    
+    
+    
+    
+
+    {% block content %}
+        
+
+    {% endblock content %}
+
+
+
+    <!------------- Footer Section ---------------->
+    <div class="footer">
+        {% comment %} <div class="footer-1">
+            <div class="about">
+                <h3>About Us</h3>
+                <p>Bloodology is a website made by student of premier University for their final project, a tool to help with anything related to blood. It helps manage blood donations and events where people can give blood. It also links up donors with people who need blood. Bloodology makes it simple to get involved in this important work.</p>
+            </div>
+
+            <div class="advantage">
+                <h4><a href="{% url 'advantage' %}">Advantage of Donating Blood</a></h4>
+                <h4><a href="{% url 'Blood_Donation_Tips' %}">Blood Donation Tips</a></h4>
+                <h4><a href="{% url 'AboutBdonation' %}">All Question About Blood</a></h4>
+                <h4><a href="{% url 'Compatible' %}">Compatible Blood Type Donors</a></h4>
+            </div>
+        </div> {% endcomment %}
+        <div class="footer-2">
+            <div >
+                <div class="about">
+                    <h3>About Us</h3>
+                    <p>ShareBlood is a website made by student of premier University for their final project, a tool to help with anything related to blood. It helps manage blood donations and events where people can give blood. It also links up donors with people who need blood. ShareBlood makes it simple to get involved in this important work.</p>
+                </div>
+            </div>
+            <div class="address">
+                <h3>Address</h3>
+                <p>Academic Building-4</p>
+                <p><i class="fa-regular fa-message"></i> info@puc.ac.bd</p>
+                <p><i class="fa-solid fa-location-dot"></i> HazariLane, Kotwali, Chittagong.</p>
+                <p><i class="fa-solid fa-phone-volume"></i> +88-031-657892.</p>
+            </div>
+            <div class="msg">
+                {% comment %} <h3>Advice & Complain here</h3>
+                <textarea
+                    class="t-aria"
+                    id="new_message"
+                    name="new_message"
+                    placeholder="Type in your message"
+                    rows="4"
+                    cols="40"
+                ></textarea><br>
+                <button class="btn" type="submit"><i class="fa-solid fa-paper-plane"></i> Sent</button> {% endcomment %}
+                <div class="advantage">
+                    <h4><a href="{% url 'About' %}">About US</a></h4>
+                    <h4><a href="{% url 'advantage' %}">Advantage of Donating Blood</a></h4>
+                    <h4><a href="{% url 'Blood_Donation_Tips' %}">Blood Donation Tips</a></h4>
+                    <h4><a href="{% url 'AboutBdonation' %}">All Question About Blood</a></h4>
+                    <h4><a href="{% url 'Compatible' %}">Compatible Blood Type Donors</a></h4>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © All rights reservs
+        </div>
+    </div>
+
+    <script src="{% static 'bloodology/js/script.js' %}"></script>
+    <script src="{% static 'bloodology/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bloodology/js/jquery.js' %}"></script>
+    <script src="{% static 'bloodology/js/proper.js' %}"></script>
+</body>
+</html>

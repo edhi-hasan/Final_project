@@ -1,0 +1,25 @@
+{% extends 'bloodology/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="blogcontainer">
+        <div class="blog-post">
+            <div class="bloguser-info">
+                <img src="{{ post.user_profile.profile_img.url }}" alt="User Name" class="blogprofile-pic">
+                <div class="bloguser-details">
+                    <h4>{{ post.user_profile.name }}</h4>
+                    <h6>Posted on: {{ post.blogPostTime }}</h6>
+                </div>
+            </div>
+            <h2 class="blog-title">{{ post.title }}</h2>
+            <p class="blog-description">
+                {{ post.content|safe }}
+            </p>
+        </div>
+        <button type="submit" class='btn btn-info'><a href="{% url 'blogapost' %}" style="color: rgb(58 39 39); text-decoration: none; font-weight: bold;">Back</a>
+        </button>
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'bloodology/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="blogPostform ">
+    <div class="blogPostformcard">
+        <h1>Create a New Blog Post</h1>
+        <form action="" method="POST"> {% csrf_token %}
+            {{ form.as_p }}  <!-- This renders the form fields including the TinyMCE content field -->
+            <button type="submit" class="btn btn-info mt-2">Post Blog</button>
+        </form>
+    </div>
+</div>
+
+<!-- Include TinyMCE JavaScript -->
+<script src="https://cdn.tiny.cloud/1/0dhbzbbtaftsmrnn7yhvkx9jg2x9ghr9ztrb51zdaxuwmjj1/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+<!-- Initialize TinyMCE for the content field -->
+<script>
+    tinymce.init({
+        selector: '#id_content',  // Ensure this matches the 'id' attribute of the content field
+        plugins: 'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+        toolbar: 'undo redo | formatselect | fontsizeselect | fontselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview',
+        menubar: 'file edit view insert format tools table help',
+        font_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier; Times New Roman=times new roman,times;',
+        fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+        branding: false
+    });
+</script>
+{% endblock content %}
+

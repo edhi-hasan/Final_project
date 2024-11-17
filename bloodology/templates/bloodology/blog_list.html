@@ -1,0 +1,28 @@
+{% extends 'bloodology/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="blogcontainer">
+    <h1>Health Blog</h1>
+
+    {% for post in blog_posts %}
+        <div class="blog-post">
+            <div class="bloguser-info">
+                <img src="{{ post.user_profile.profile_img.url }}" alt="User Name" class="blogprofile-pic">
+                <div class="bloguser-details">
+                    <h4>{{ post.user_profile.name }}</h4>
+                    <h6>Posted on: {{ post.blogPostTime }}</h6>
+                </div>
+            </div>
+            <h2 class="blog-title">
+                <a style="text-decoration: none; color:#333;" href="{% url 'blog_detail' post.id %}">{{ post.title }}</a>
+            </h2>
+            <p class="blog-description">
+                {{ post.content|truncate_html:300|safe }}
+                <a href="{% url 'blog_detail' post.id %}">Read more</a>
+            </p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
